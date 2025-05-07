@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+    <title>Confirmar Cita</title>
+    <link rel="stylesheet" href="/css/confirmar-cita.css" />
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerMedico}"></header>
+
+<div class="confirmar-cita-wrapper">
+    <h2 class="confirmar-cita-titulo">Confirmar Cita</h2>
+
+    <form th:action="@{/medicos/confirmar}" method="post" class="confirmar-cita-form">
+        <input type="hidden" name="citaId" th:value="${cita.id}" />
+
+        <div class="confirmar-cita-info">
+            <p><strong>Paciente:</strong> <span th:text="${cita.paciente.usuario.nombre}">Nombre del Paciente</span></p>
+            <p><strong>Fecha:</strong>
+                <span th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy HH:mm')}">00/00/0000</span>
+            </p>
+        </div>
+
+        <div class="confirmar-cita-notas">
+            <label for="notas-cita" class="confirmar-cita-label">Notas:</label><br>
+            <textarea id="notas-cita" name="notas" rows="5" cols="60"
+                      class="confirmar-cita-textarea"
+                      placeholder="Escribe las notas de la cita aquí..."></textarea>
+        </div>
+
+        <div class="confirmar-cita-botones">
+            <button type="submit" class="btn-confirmar-cita">✔ Confirmar y Guardar</button>
+            <a th:href="@{/medicos/show}" class="btn-cancelar-cita">✘ Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>
+
+

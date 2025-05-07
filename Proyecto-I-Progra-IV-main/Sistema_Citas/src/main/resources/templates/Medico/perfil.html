@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+            <head th:replace="~{Common/fragments :: head}">
+                <title>Doctor Profile</title>
+            </head>
+            <body>
+            <header th:replace="~{Common/fragments :: headerMedico}"></header>
+            <div class="doctor-perfil-container">
+                <h2 class="doctor-perfil-title">Doctor Profile</h2>
+                <div class="doctor-perfil-body">
+                    <div class="doctor-perfil-foto">
+                        <img th:if="${perfil.imagen != null}"
+                             th:src="@{/images/perfiles/{img}(img=${perfil.imagen})}"
+                 alt="Foto de perfil">
+        </div>
+        <div class="doctor-perfil-info">
+            <p><strong>Nombre:</strong> <span th:text="${perfil.nombre}"></span></p>
+            <p><strong>Especialidad:</strong> <span th:text="${perfil.especialidad}"></span></p>
+            <p><strong>Ciudad:</strong> <span th:text="${perfil.ciudad}"></span></p>
+            <p><strong>Instalación:</strong> <span th:text="${perfil.instalacion}"></span></p>
+            <p><strong>Costo de Consulta:</strong> ₡<span th:text="${perfil.costoConsulta}"></span></p>
+            <p><strong>Frecuencia de Citas:</strong> <span th:text="${perfil.frecuencia}"></span> min</p>
+            <p><strong>Horario de atención:</strong></p>
+            <ul class="doctor-perfil-horarios">
+                <li th:each="horario : ${perfil.horarios}">
+                    <span th:text="${horario.diaSemana}"></span>:
+                    <span th:text="${horario.horaInicio}"></span> -
+                    <span th:text="${horario.horaFin}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

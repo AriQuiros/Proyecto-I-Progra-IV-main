@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{Common/fragments :: head}"></head>
+
+<body>
+<header th:replace="~{Common/fragments :: headerIndex}"></header>
+
+<div class="perfil-container">
+    <h2 class="perfil-title">My Profile</h2>
+
+    <div class="perfil-body">
+        <div class="perfil-info">
+            <p><strong>Name:</strong> <span th:text="${paciente.usuario.nombre}"></span></p>
+
+            <h3>My Appointments</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date and Hour<span>&nbsp;&nbsp;&nbsp;</span></th>
+                    <th>Doctor<span>&nbsp;&nbsp;&nbsp;</span></th>
+                    <th>Current State<span>&nbsp;&nbsp;&nbsp;</span></th>
+                    <th>Notes   </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${paciente.citas != null}" th:each="cita : ${paciente.citas}">
+                    <td th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${cita.doctor.nombre}"></td>
+                    <td th:text="${cita.estado}"></td>
+                    <td th:text="${cita.notas}"></td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

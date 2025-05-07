@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}"></head>
+<body>
+<header th:replace="~{Common/fragments :: headerPaciente}"></header>
+
+<section class="cita-confirm-wrapper">
+    <form th:action="@{/pacientes/confirmarcita}" method="post" class="cita-confirm-form">
+        <input type="hidden" name="medicoId" th:value="${medico.id}" />
+        <input type="hidden" name="fecha" th:value="${fecha}" />
+        <input type="hidden" name="hora" th:value="${hora}" />
+
+        <div class="cita-confirm-card">
+            <img th:if="${medico.imagen != null}"
+                 th:src="@{/images/perfiles/{img}(img=${medico.imagen})}"
+                 alt="Foto de ${medico.nombre}"
+                 class="doctor-img-doctor"/>
+
+            <img th:if="${medico.imagen == null}"
+                 src="/imagenes/usuario.png"
+                 alt="Imagen por defecto"
+                 class="doctor-img-doctor"/>
+
+            <div class="cita-confirm-info">
+                <p class="cita-confirm-nombre">
+                    <i class="bi bi-person-badge"></i>
+                    <span th:text="${medico.usuario.nombre}">Nombre Médico</span>
+                </p>
+
+                <p class="cita-confirm-fecha">
+                    <i class="bi bi-calendar-event"></i>
+                    <span th:text="${fecha + ' ' + hora}"></span>
+                </p>
+
+                <p class="cita-confirm-ubicacion">
+                    <i class="bi bi-geo-alt"></i>
+                    <span th:text="${medico.instalacion + ' @ ' + medico.ciudad}"></span>
+                </p>
+            </div>
+
+            <div class="cita-confirm-botones">
+                <button type="submit" class="btn-confirmar">Confirm</button>
+                <a th:href="@{/}" class="btn-cancelar">Cancel</a>
+            </div>
+        </div>
+    </form>
+</section>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

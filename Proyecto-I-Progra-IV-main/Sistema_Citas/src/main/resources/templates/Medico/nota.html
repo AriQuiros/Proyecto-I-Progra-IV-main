@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerMedico}"></header>
+
+<div class="nota-cita-container">
+    <h2>Notas de la Cita</h2>
+    <p><strong>Paciente:</strong> <span th:text="${cita.paciente.usuario.nombre}"></span></p>
+    <p><strong>Fecha:</strong>
+        <span th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
+    </p>
+    <p><strong>Notas:</strong></p>
+    <p class="nota-cita-nota" th:text="${cita.notas != null ? cita.notas : 'Sin notas registradas.'}"></p>
+
+    <a th:href="@{/medicos/show}" class="nota-cita-btn-volver">← Volver</a>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

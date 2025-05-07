@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/Common/fragments :: head}">
+  <title>Select Registration Type</title>
+</head>
+
+<body>
+<header th:replace="~{/Common/fragments :: headerIndex}"></header>
+
+<div class="login-container-auth">
+  <div class="login-box-auth">
+    <h2>Select Your Registration Type</h2>
+    <br><br>
+    <a th:href="@{/usuarios/patient}" class="login-btn-auth">Patient</a>
+    &nbsp;
+    <a th:href="@{/usuarios/doctor}" class="login-btn-auth">Doctor</a>
+  </div>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

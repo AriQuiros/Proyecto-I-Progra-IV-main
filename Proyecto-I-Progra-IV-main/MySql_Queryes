@@ -1,0 +1,119 @@
+CREATE DATABASE IF NOT EXISTS sistema_citas;
+USE sistema_citas;
+
+DROP TABLE IF EXISTS USUARIO;
+CREATE TABLE USUARIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    clave VARCHAR(100) NOT NULL,
+    rol ENUM('PACIENTE','MEDICO','ADMINISTRADOR') NOT NULL
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS MEDICO;
+CREATE TABLE MEDICO (
+    id INT PRIMARY KEY,
+    especialidad VARCHAR(100) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    costo_consulta INT NOT NULL,
+    frecuencia INT NOT NULL,
+    instalacion VARCHAR(100) NOT NULL,
+    estado VARCHAR(20) NOT NULL,
+    imagen VARCHAR(255),
+    CONSTRAINT fk_medico_usuario
+        FOREIGN KEY (id)
+        REFERENCES USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS PACIENTE;
+CREATE TABLE PACIENTE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    CONSTRAINT fk_paciente_usuario
+        FOREIGN KEY (id)
+        REFERENCES USUARIO (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS HORARIO;
+CREATE TABLE HORARIO (
+    numero INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT NOT NULL,
+    dia INT NOT NULL CHECK (dia BETWEEN 1 AND 7),
+    horainicio INT NOT NULL,
+    horafin INT NOT NULL,
+    CHECK (horainicio < horafin),
+    CONSTRAINT fk_horario_medico
+        FOREIGN KEY (doctor_id)
+        REFERENCES MEDICO(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS CITA;
+CREATE TABLE CITA (
+    numero INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT NOT NULL,
+    paciente_id INT NOT NULL,
+    fecha_hora DATETIME NOT NULL,
+    estado ENUM('CONFIRMADA', 'PENDIENTE', 'CANCELADA') NOT NULL,
+    notas TEXT,
+    CONSTRAINT fk_cita_medico
+        FOREIGN KEY (doctor_id)
+        REFERENCES MEDICO(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_cita_paciente
+        FOREIGN KEY (paciente_id)
+        REFERENCES PACIENTE(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+
+
+-- Insertar usuarios sin espacios
+INSERT INTO USUARIO (nombre, clave, rol) VALUES
+('Admin', 'admin123', 'ADMINISTRADOR'),
+('DrJuanPerez', 'clave123', 'MEDICO'),
+('DraMariaLopez', 'clave456', 'MEDICO'),
+('DrCarlosGomez', 'clave789', 'MEDICO'),
+('DraAnaTorres', 'clave101', 'MEDICO'),
+('CarlosSanchez', 'paciente123', 'PACIENTE'),
+('LauraMartinez', 'paciente456', 'PACIENTE'),
+('PedroRamirez', 'paciente789', 'PACIENTE'),
+('SofiaFernandez', 'paciente101', 'PACIENTE'),
+('JoseGarcia', 'paciente202', 'PACIENTE'),
+('MariaRodriguez', 'paciente303', 'PACIENTE');
+
+-- Insertar médicos
+INSERT INTO MEDICO (id, especialidad, ciudad, costo_consulta, frecuencia, instalacion, estado) VALUES
+(2, 'Cardiología', 'San José', 50000, 2, 'Hospital Central', 'APROBADO'),
+(3, 'Pediatría', 'Heredia', 40000, 3, 'Clínica Infantil', 'APROBADO'),
+(4, 'Dermatología', 'Alajuela', 45000, 2, 'Hospital General', 'PENDIENTE'),
+(5, 'Oftalmología', 'Cartago', 48000, 3, 'Centro Oftalmológico', 'PENDIENTE');
+
+-- Insertar pacientes
+INSERT INTO PACIENTE (id) VALUES (6), (7), (8), (9), (10), (11);
+
+INSERT INTO horario (doctor_id, dia, horainicio, horafin) VALUES
+(3, 3, 9, 12),
+(3, 5, 14, 17),
+(4, 6, 10, 14),
+(5, 5, 9, 12),
+(5, 1, 8, 11),
+(2, 1, 9, 13),
+(3, 1, 10, 13),
+(4, 4, 9, 12),
+(4, 2, 14, 17),
+(5, 3, 13, 16),
+(2, 2, 14, 18),
+(2, 4, 9, 12);
+
+INSERT INTO cita (doctor_id, paciente_id, fecha_hora, estado, notas) VALUES
+(2, 6, '2025-03-24 09:00:00', 'CONFIRMADA', 'Chequeo de rutina'),
+(3, 7, '2025-03-26 09:00:00', 'CONFIRMADA', 'Consulta pediátrica'),
+(5, 8, '2025-03-28 10:00:00', 'PENDIENTE', 'Control ocular');
+

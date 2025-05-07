@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{Common/fragments :: head}">
+</head>
+
+<body>
+
+<div  th:replace="~{Common/fragments :: headerIndex}"></div>
+
+
+<div th:if="${esperaAprobacion}" id="alerta-registro" class="registro-alert-doctor">
+    Debe esperar a que el administrador apruebe su registro.
+</div>
+
+<div id="contenedor-busqueda" class="search-contenido-doctor">
+    <section class="search-bar-doctor">
+        <form method="get" action="/">
+            <input type="text" name="especialidad" placeholder="Speciality" th:value="${param.especialidad}">
+            <input type="text" name="ciudad" placeholder="City" th:value="${param.ciudad}">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <section class="cards-doctor">
+        <div th:each="medico : ${medicos}" class="medico-card-doctor">
+            <div class="card-left-doctor">
+                <img th:if="${medico.imagen != null}"
+                     th:src="@{/images/perfiles/{img}(img=${medico.imagen})}"
+                     alt="Foto de ${medico.nombre}"
+                     class="doctor-img-doctor"/>
+
+                <img th:if="${medico.imagen == null}"
+                     src="/imagenes/usuario.png"
+                     alt="Imagen por defecto"
+                     class="doctor-img-doctor"/>
+                <div>
+                    <div class="h-doctor">
+                        <h4 th:text="${medico.nombre}">Doctor Name</h4>
+                        <p th:text="${medico.costoConsulta}">Cost</p>
+                    </div>
+                    <p th:text="${medico.especialidad}">Specialty</p>
+                    <p th:text="${medico.instalacion} + ' @ ' + ${medico.ciudad}">Location</p>
+                </div>
+            </div>
+
+            <div class="card-right-doctor">
+                <div th:each="horario : ${medico.horarios}" class="horario-group-doctor">
+                    <p class="pfecha" th:text="${horario.diaSemana}"></p>
+                    <p class="pfecha" th:text="${horario.fechaReal}"></p>
+                    <div class="horas-doctor">
+
+                        <!-- Si está libre y NO hay sesión -->
+                        <a th:if="!${horario.ocupado} and ${session.usuario == null}"
+                           th:href="@{/usuarios/login(previourl='/pacientes/confirmarcita', medicoId=${medico.id}, fecha=${horario.fechaReal}, hora=${horario.horaInicio})}">
+                            <button class="hora-libre" th:text="${horario.horaInicio}"></button>
+                        </a>
+
+                        <!-- Si está libre y el usuario es paciente -->
+                        <a th:if="!${horario.ocupado} and ${session.usuario != null and session.usuario.rol == 'PACIENTE'}"
+                           th:href="@{/pacientes/confirmarcita(medicoId=${medico.id}, fecha=${horario.fechaReal}, hora=${horario.horaInicio})}">
+                            <button class="hora-libre" th:text="${horario.horaInicio}"></button>
+                        </a>
+
+                        <!-- Si está ocupado -->
+                        <button th:if="${horario.ocupado}" class="hora-ocupada" disabled
+                                th:text="${horario.horaInicio}" title="No disponible"></button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="boton-doctor">
+                <a th:href="@{/medicos/cronograma/{id}(id=${medico.id})}">
+                    <button>Schedule <i class="bi bi-arrow-right-circle-fill"></i></button>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>
+
+

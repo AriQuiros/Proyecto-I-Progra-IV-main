@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/Common/fragments :: head}">
+    <title>Login</title>
+</head>
+
+<body>
+<header th:replace="~{/Common/fragments :: headerLogin}"></header>
+
+<div class="login-container-auth">
+    <div class="login-box-auth">
+        <h2>Login</h2><br>
+        <div class="user-avatar-auth">
+            <img src="/imagenes/usuario.png" alt="User Avatar">
+        </div>
+        <form th:action="@{/usuarios/loginAccept}" method="post">
+            <div class="input-group-auth">
+                <i class="bi bi-person-fill"></i>
+                <input type="text" name="user_id" placeholder="User id" required>
+            </div>
+            <div class="input-group-auth">
+                <i class="bi bi-key-fill"></i>
+                <input type="password" name="password" placeholder="User Password" required>
+            </div>
+            <button type="submit" class="login-btn-auth">Log in</button>
+        </form>
+        <p th:if="${error}" class="error-message-auth" th:text="${error}"></p><br>
+        <p>Don't have an account? <a th:href="@{/usuarios/register}" class="register-link-auth">Register</a></p>
+    </div>
+</div>
+
+<footer th:replace="/Common/fragments :: footer"></footer>
+</body>
+</html>

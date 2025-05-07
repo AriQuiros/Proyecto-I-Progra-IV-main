@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+    <title>Doctor Citas</title>
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerMedico}"></header>
+<div class="doctor-citas-contenido">
+    <h2>Doctor - <span th:text="${doctor.usuario.nombre}" class="doctor-nombre-citas">Bruce Banner</span> - appointments</h2>
+    <div th:if="${mensaje}" class="mensaje-exito">
+        <p th:text="${mensaje}"></p>
+    </div>
+    <form class="doctor-search-bar" method="get" th:action="@{/medicos/show}">
+        <select name="estado">
+            <option th:selected="${estadoSeleccionado == null}" value="">Status</option>
+            <option th:selected="${estadoSeleccionado == 'PENDIENTE'}" value="PENDIENTE">Pending</option>
+            <option th:selected="${estadoSeleccionado == 'CONFIRMADA'}" value="CONFIRMADA">Attended</option>
+            <option th:selected="${estadoSeleccionado == 'CANCELADA'}" value="CANCELADA">Cancelled</option>
+        </select>
+        <input type="text" name="paciente" placeholder="Patient" th:value="${pacienteSeleccionado}">
+        <button type="submit" class="doctor-btn-search">Search</button>
+    </form>
+    <div class="doctor-cards-container">
+        <div th:each="cita : ${citas}" class="doctor-card-cita">
+            <div class="doctor-left">
+                <img th:src="@{/imagenes/usuario.png}" alt="Paciente">
+                <span class="doctor-paciente-nombre" th:text="${cita.paciente.usuario.nombre}">Paciente</span>
+            </div>
+            <div class="doctor-right">
+                <div class="doctor-fecha">
+                    <p th:text="${cita.fechaHora != null} ? ${cita.fechaHora.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy - HH:mm'))} : 'N/A'"></p>
+                </div>
+                <div class="doctor-estado">
+                    <span th:switch="${cita.estado}">
+                        <span th:case="'PENDIENTE'" class="badge-pending-doctor">Pending</span>
+                        <span th:case="'CONFIRMADA'" class="badge-attended-doctor">Attended</span>
+                        <span th:case="'CANCELADA'" class="badge-cancelled-doctor">Cancelled</span>
+                    </span>
+                </div>
+                <div class="doctor-acciones" th:if="${cita.estado == 'PENDIENTE'}">
+                    <a th:href="@{/medicos/confirmar(id=${cita.id})}" class="link-green-doctor">✔ Attend</a>
+                    <a th:href="@{/medicos/cancelar(citaId=${cita.id})}" class= "link-red-doctor">✘ Cancel</a>
+                </div>
+                <div class="doctor-acciones" th:if="${cita.estado == 'CONFIRMADA'}">
+                    <a th:href="@{/medicos/verNota(id=${cita.id})}" class="link-view-doctor">🔍 View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

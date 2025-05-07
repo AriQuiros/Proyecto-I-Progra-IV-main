@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+    <title>Configuración de Perfil</title>
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerMedico}"></header>
+
+<div class="doctor-settings-container">
+    <h2>Editar Perfil Médico</h2>
+    <form th:action="@{/medicos/editar}" method="post" enctype="multipart/form-data" th:object="${perfil}">
+
+        <div class="doctor-settings-form-row">
+            <!-- Columna izquierda: Imagen -->
+            <div class="doctor-settings-form-col imagen-col">
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Foto de Perfil:</label>
+                    <input type="file" name="fotoPerfil" accept="image/*" />
+                </div>
+                <div class="doctor-settings-form-group" th:if="${perfil.imagen != null}">
+                    <label class="doctor-settings-form-label">Imagen Actual:</label>
+                    <img th:src="@{/images/perfiles/{img}(img=${perfil.imagen})}"
+                         alt="Foto de perfil"
+                         class="doctor-settings-img-preview"/>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Datos del médico -->
+            <div class="doctor-settings-form-col datos-col">
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Nombre:</label>
+                    <input type="text" th:field="*{nombre}" class="doctor-settings-form-input"/>
+                </div>
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Especialidad:</label>
+                    <input type="text" th:field="*{especialidad}" class="doctor-settings-form-input"/>
+                </div>
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Ciudad:</label>
+                    <input type="text" th:field="*{ciudad}" class="doctor-settings-form-input"/>
+                </div>
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Instalación:</label>
+                    <input type="text" th:field="*{instalacion}" class="doctor-settings-form-input"/>
+                </div>
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Costo de Consulta (₡):</label>
+                    <input type="number" th:field="*{costoConsulta}" min="0" class="doctor-settings-form-input"/>
+                </div>
+                <div class="doctor-settings-form-group">
+                    <label class="doctor-settings-form-label">Frecuencia de Citas (en minutos):</label>
+                    <input th:type="number" th:field="*{frecuencia}" class="doctor-settings-form-select"/>
+                </div>
+            </div>
+
+            <!-- Horarios -->
+            <div class="doctor-settings-form-group">
+                <label class="doctor-settings-form-label">Configurar Horarios Semanales:</label>
+                <div th:each="dia, iterStat : ${diasSemana}">
+                    <div class="doctor-settings-horario-row">
+                        <label class="doctor-settings-form-label" th:text="${dia} + ':'"></label>
+                        <input type="hidden" th:field="*{horarios[__${iterStat.index}__].diaSemana}" th:value="${dia}" />
+                        <input type="time" th:field="*{horarios[__${iterStat.index}__].horaInicio}" min="06:00" max="22:00" class="doctor-settings-form-input" placeholder="Hora Inicio"/>
+                        <input type="time" th:field="*{horarios[__${iterStat.index}__].horaFin}" min="06:00" max="22:00" class="doctor-settings-form-input" placeholder="Hora Fin"/>
+                        <input type="hidden" th:field="*{horarios[__${iterStat.index}__].ocupado}" th:value="false"/>
+                        <input type="hidden" th:field="*{horarios[__${iterStat.index}__].fechaReal}" th:value="''"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="doctor-settings-form-group">
+            <button type="submit" class="doctor-settings-btn">Guardar</button>
+        </div>
+    </form>
+</div>
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

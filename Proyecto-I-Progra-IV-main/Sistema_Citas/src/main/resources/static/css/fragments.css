@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.headerIndex, .headerMedico, .headerAdmin, .headerLogin, .headerPaciente {
+    background: #E8F0FE;
+    padding: 15px 30px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 100px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #62a1cb;
+    background-size: cover;
+    margin-right: 15px;
+}
+
+.logo span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3A73C4;
+}
+
+.contact-info {
+    color: white;
+    font-size: medium;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: dimgrey;
+
+}
+
+footer {
+    background: #212f3c;
+    color: lightgrey;
+    text-align: right;
+    padding: 5px 0;
+    margin-top: auto;
+    font-size: small;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+#foot {
+    color: white;
+    font-size: large;
+}
+
+.social-icons {
+    display: flex;
+    margin-right: 0px;
+
+}
+
+nav ul li a.user-name {
+    color: dimgrey;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    margin-right: 7px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    position: relative;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+nav ul li.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 5px 0;
+    min-width: 5px;
+    z-index: 1000;
+}
+
+.dropdown-menu li {
+    padding: 5px 8px;
+}
+
+.dropdown-menu li a {
+    color: #333;
+    display: block;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f1f1f1;
+}
+
+.medico-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.medico-table th,
+.medico-table td {
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.medico-table th {
+    background-color: #17a2b8;
+    color: white;
+    font-weight: bold;
+}
+
+.medico-table tr {
+    background-color: white;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.medico-table tr:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.btn-aprobar,
+.btn-rechazar {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    margin: 2px;
+}
+
+.btn-aprobar {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-aprobar:hover {
+    background-color: #218838;
+}
+
+.btn-rechazar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-rechazar:hover {
+    background-color: #c82333;
+}
+
+.contenido {
+    margin: 20px 60px;
+    background-color: #eeeeee;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

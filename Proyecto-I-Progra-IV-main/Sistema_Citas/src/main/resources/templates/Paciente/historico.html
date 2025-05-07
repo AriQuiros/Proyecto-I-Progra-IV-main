@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerPaciente}"></header>
+
+<section class="historico-citas-container">
+    <h2>
+        Patient – <span th:text="${paciente.usuario.nombre}">Nombre Paciente</span> – appointment history
+    </h2>
+
+    <form method="get" th:action="@{/pacientes/citas}" class="historico-citas-filtros">
+        <select name="estado" class="filtro-select">
+            <option value="">All</option>
+            <option value="PENDIENTE" th:selected="${estado == 'PENDIENTE'}">Pending</option>
+            <option value="CONFIRMADA" th:selected="${estado == 'CONFIRMADA'}">Confirmed</option>
+            <option value="COMPLETADA" th:selected="${estado == 'COMPLETADA'}">Attended</option>
+            <option value="CANCELADA" th:selected="${estado == 'CANCELADA'}">Cancelled</option>
+        </select>
+
+        <input type="text" name="medico" class="filtro-input" th:value="${medico}" placeholder="Doctor"/>
+
+        <button type="submit" class="filtro-btn">Search</button>
+    </form>
+
+    <div class="historico-citas-lista">
+        <div class="cita-card" th:each="cita : ${citas}">
+            <div class="cita-left">
+                <div>
+                    <p class="cita-nombre" th:text="${cita.doctor.usuario.nombre}">Doctor Name</p>
+                    <p class="cita-especialidad" th:text="${cita.doctor.especialidad}">Especialidad</p>
+                    <p class="cita-clinica" th:text="${cita.doctor.instalacion} + ' @ ' + ${cita.doctor.ciudad}">Ubicación</p>
+                </div>
+            </div>
+
+            <div class="cita-right">
+                <p class="cita-fecha" th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(cita.fechaHora, 'HH:mm')}">Fecha</p>
+                <span th:classappend="${'badge ' + cita.estado.toLowerCase() + '-badge'}"
+                      th:text="${cita.estado}">Estado</span>
+
+                <div class="cita-actions">
+                    <a th:href="@{/pacientes/verNota(id=${cita.id})}" class="cita-btn-view">🔍 View</a>
+                </div>
+            </div>
+
+        <div th:if="${#lists.isEmpty(citas)}" class="cita-empty">No appointments found with current filters.</div>
+        </div>
+    </div>
+</section>
+
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>

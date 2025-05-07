@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/Common/fragments :: head}">
+    <title>Patient Registration</title>
+</head>
+
+<body>
+<header th:replace="~{/Common/fragments :: headerIndex}"></header>
+
+<div class="login-container-auth">
+    <div class="login-box-auth">
+        <h2>Patient Registration</h2>
+        <form th:action="@{/usuarios/patientAdd}" method="post" onsubmit="return checkPasswords()">
+            <div class="input-group-auth">
+                <i class="bi bi-person-fill"></i>
+                <input type="text" name="nombre" placeholder="Full Name" required pattern="[^\s]+" title="No spaces allowed">
+            </div>
+            <div class="input-group-auth">
+                <i class="bi bi-key-fill"></i>
+                <input type="password" name="clave" id="clave" placeholder="Password" required>
+            </div>
+            <div class="input-group-auth">
+                <i class="bi bi-key-fill"></i>
+                <input type="password" name="confirmClave" id="confirmClave" placeholder="Confirm Password" required>
+            </div>
+            <input type="hidden" name="rol" value="PACIENTE">
+            <div class="input-group-auth">
+                <i class="bi bi-calendar-check"></i>
+                <input type="text" name="historialMedico" placeholder="Medical History" required>
+            </div>
+            <div class="input-group-auth">
+                <i class="bi bi-heart-pulse"></i>
+                <input type="text" name="alergias" placeholder="Allergies" required>
+            </div>
+            <button type="submit" class="login-btn-auth">Register</button>
+        </form>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    </div>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+
+<script>
+    function checkPasswords() {
+        const password = document.getElementById('clave').value;
+        const confirmPassword = document.getElementById('confirmClave').value;
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

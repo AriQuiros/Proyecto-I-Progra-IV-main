@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerIndex}"></header>
+
+<section class="cronograma-section">
+    <div>
+        <div class="cronograma-card">
+            <div class="cronograma-card-left">
+                <img th:if="${medico.imagen != null}"
+                     th:src="@{/images/perfiles/{img}(img=${medico.imagen})}"
+                     alt="Foto de ${medico.nombre}"
+                     class="doctor-img-doctor"/>
+
+                <img th:if="${medico.imagen == null}"
+                     src="/imagenes/usuario.png"
+                     alt="Imagen por defecto"
+                     class="doctor-img-doctor"/>                <div>
+                    <div class="h">
+                        <h4 th:text="${medico.nombre}">Doctor Name</h4>
+                        <p th:text="${medico.costoConsulta}">Cost</p>
+                    </div>
+                    <p th:text="${medico.especialidad}">Specialty</p>
+                    <p th:text="${medico.instalacion} + ' @ ' + ${medico.ciudad}">Location</p>
+                </div>
+            </div>
+
+            <div class="cronograma-card-right">
+                <div th:each="horario : ${medico.horarios}" class="cronograma-horario-group">
+                    <p th:text="${horario.diaSemana}"></p>
+                    <p th:text="${horario.fechaReal}"></p>
+                    <div class="cronograma-horas">
+                        <!-- Si no está ocupado y usuario NO logueado -->
+                        <a th:if="!${horario.ocupado} and ${session.usuario == null}"
+                           th:href="@{/usuarios/login(previourl='/medicos/confirmarcita', medicoId=${medico.id}, fecha=${horario.fechaReal}, hora=${horario.horaInicio})}">
+                            <button type="button" class="btn-hora-libre" th:text="${horario.horaInicio}"></button>
+                        </a>
+
+                        <!-- Si no está ocupado y usuario PACIENTE -->
+                        <a th:if="!${horario.ocupado} and ${session.usuario != null and session.usuario.rol == 'PACIENTE'}"
+                           th:href="@{/pacientes/confirmarcita(medicoId=${medico.id}, fecha=${horario.fechaReal}, hora=${horario.horaInicio})}">
+                            <button class="hora-libre" th:text="${horario.horaInicio}"></button>
+                        </a>
+
+                        <!-- Si está ocupado -->
+                        <button th:if="${horario.ocupado}" class="btn-hora-ocupada" disabled th:text="${horario.horaInicio}"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cronograma-botones">
+            <a th:href="@{/medicos/cronograma/{id}(id=${prevId})}">
+                <button>Prev <i class="bi bi-arrow-left-circle-fill"></i></button>
+            </a>
+            <a th:href="@{/medicos/cronograma/{id}(id=${nextId})}">
+                <button>Next <i class="bi bi-arrow-right-circle-fill"></i></button>
+            </a>
+        </div>
+
+        <a th:href="@{/}" class="cronograma-back-btn">Go Back</a>
+    </div>
+</section>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>
+

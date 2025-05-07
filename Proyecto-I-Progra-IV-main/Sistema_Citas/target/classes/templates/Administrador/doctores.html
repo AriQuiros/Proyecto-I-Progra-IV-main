@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{Common/fragments :: head}">
+</head>
+<body>
+<header th:replace="~{Common/fragments :: headerAdmin}"></header>
+
+<div class="admin-contenido">
+    <h1>Lista de Doctores</h1>
+    <table class="admin-medico-table">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Ciudad</th>
+            <th>Costo de Consulta</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="medico : ${medicos}">
+            <td th:text="${medico.usuario.nombre}">Nombre</td>
+            <td th:text="${medico.especialidad}">Especialidad</td>
+            <td th:text="${medico.ciudad}">Ciudad</td>
+            <td th:text="${medico.costoConsulta}">Costo de Consulta</td>
+            <td th:text="${medico.estado}">Estado</td>
+            <td>
+                <a th:if="${medico.estado == 'PENDIENTE'}"
+                   th:href="@{/admin/aprobarMedico/{id}(id=${medico.id})}"
+                   class="btn-aprobar">Aprobar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="~{Common/fragments :: footer}"></footer>
+</body>
+</html>
